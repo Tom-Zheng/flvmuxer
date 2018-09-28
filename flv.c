@@ -20,6 +20,8 @@
   */
 #include "flv.h"
 
+#define FRAME_PER_SEC 10
+
 static uint32_t find_start_code(uint8_t *buf, uint32_t zeros_in_startcode)   
 {   
   uint32_t info;   
@@ -239,7 +241,7 @@ void write_flv(char* data, int len, const char* filename)
 
     if (nal[0] == 0x65)
     {
-        ts += 170;
+        ts += 1000 / FRAME_PER_SEC;
         body_len = nal_len + 5 + 4; //flv VideoTagHeader +  NALU length
         output_len = body_len + FLV_TAG_HEAD_LEN + FLV_PRE_TAG_LEN;
         output = malloc(output_len);
@@ -284,7 +286,7 @@ void write_flv(char* data, int len, const char* filename)
 
     if (nal[0] == 0x61)
     {
-        ts += 170;
+        ts += 1000 / FRAME_PER_SEC;
         body_len = nal_len + 5 + 4; //flv VideoTagHeader +  NALU length
         output_len = body_len + FLV_TAG_HEAD_LEN + FLV_PRE_TAG_LEN;
         output = malloc(output_len);
